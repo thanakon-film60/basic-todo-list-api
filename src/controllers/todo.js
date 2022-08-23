@@ -4,9 +4,39 @@ import { validateTodo } from '../utils/validator';
 import { ValidationError } from '../utils/error';
 
 export const getAllTodos = catchAsync(async (req, res, next) => {
-  const todos = await todoService.getAllTodos();
-  res.status(200).json({ todos });
+  const { title, completed, sort } = req.query;
+
+  let todos = await todoService.getAllTodos();
+
+  if (title || completed) {
+    todos = todos.filter(
+      todo =>
+        (!title || todo.title.toLowerCase().includes(title.toLowerCase())) &&
+        (!completed ||
+          (['true', '1'].includes(completed) && todo.completed) ||
+          (['false', '0'].includes(completed) && !todo.completed))
+    );
+  }
+
+  if (sort === 'title') {
+    todos.sort((a, b) =>
+      a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
+    );
+  } else if (sort === '-title') {
+    todos.sort((a, b) =>
+      a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1
+    );
+  }
+
+  if (req.query.page || req.query.limit) {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 100;
+    todos = todos.slice((page - 1) * limit, page * limit);
+  }
+
+  res.status(200).json({ total: todos.length, todos });
 });
+
 export const getTodoById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const todo = await todoService.getTodoById(id);
