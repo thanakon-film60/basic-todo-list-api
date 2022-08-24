@@ -7,7 +7,6 @@ export const getAllTodos = catchAsync(async (req, res, next) => {
   const { title, completed, sort } = req.query;
 
   let todos = await todoService.getAllTodos();
-  const total = todos.length;
 
   if (title || completed) {
     todos = todos.filter(
@@ -28,6 +27,8 @@ export const getAllTodos = catchAsync(async (req, res, next) => {
       a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1
     );
   }
+
+  const total = todos.length;
 
   if (req.query.page || req.query.limit) {
     const page = req.query.page || 1;
