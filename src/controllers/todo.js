@@ -7,6 +7,7 @@ export const getAllTodos = catchAsync(async (req, res, next) => {
   const { title, completed, sort } = req.query;
 
   let todos = await todoService.getAllTodos();
+  const total = todos.length;
 
   if (title || completed) {
     todos = todos.filter(
@@ -34,7 +35,7 @@ export const getAllTodos = catchAsync(async (req, res, next) => {
     todos = todos.slice((page - 1) * limit, page * limit);
   }
 
-  res.status(200).json({ total: todos.length, todos });
+  res.status(200).json({ total, todos });
 });
 
 export const getTodoById = catchAsync(async (req, res, next) => {
