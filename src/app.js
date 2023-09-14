@@ -5,9 +5,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import chalk from 'chalk';
 
-import todoRoute from './routes/todo';
-import notFoundMiddleware from './middlewares/not-found';
-import errorMiddleware from './middlewares/error';
+import todoRoute from './routes/todo.js';
+import notFoundMiddleware from './middlewares/not-found.js';
+import errorMiddleware from './middlewares/error.js';
 
 const app = express();
 

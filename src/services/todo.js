@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-import { readTodo, writeTodo } from '../utils/file';
+import { readTodo, writeTodo } from "../utils/file.js";
 
 export const getAllTodos = async () => {
   const todos = await readTodo();

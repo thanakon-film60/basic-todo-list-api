@@ -1,7 +1,7 @@
-import catchAsync from '../utils/catch-async';
-import * as todoService from '../services/todo';
-import { validateTodo } from '../utils/validator';
-import { ValidationError } from '../utils/error';
+import catchAsync from "../utils/catch-async.js";
+import * as todoService from "../services/todo.js";
+import { validateTodo } from "../utils/validator.js";
+import { ValidationError } from "../utils/error.js";
 
 export const getAllTodos = catchAsync(async (req, res, next) => {
   const { title, completed, sort } = req.query;
@@ -13,16 +13,16 @@ export const getAllTodos = catchAsync(async (req, res, next) => {
       todo =>
         (!title || todo.title.toLowerCase().includes(title.toLowerCase())) &&
         (!completed ||
-          (['true', '1'].includes(completed) && todo.completed) ||
-          (['false', '0'].includes(completed) && !todo.completed))
+          (["true", "1"].includes(completed) && todo.completed) ||
+          (["false", "0"].includes(completed) && !todo.completed))
     );
   }
 
-  if (sort === 'title') {
+  if (sort === "title") {
     todos.sort((a, b) =>
       a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
     );
-  } else if (sort === '-title') {
+  } else if (sort === "-title") {
     todos.sort((a, b) =>
       a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1
     );
@@ -53,7 +53,7 @@ export const createTodo = catchAsync(async (req, res, next) => {
 
   const todo = await todoService.createTodo({
     title: title.trim(),
-    completed: !!completed
+    completed: !!completed,
   });
 
   res.status(201).json({ todo });
@@ -69,7 +69,7 @@ export const updateTodo = catchAsync(async (req, res, next) => {
   const todo = await todoService.updateTodo(
     {
       title: title.trim(),
-      completed: !!completed
+      completed: !!completed,
     },
     id
   );
